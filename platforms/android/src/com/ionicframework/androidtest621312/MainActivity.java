@@ -22,6 +22,20 @@ package com.ionicframework.androidtest621312;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
+
+// X WALK TEST STARTS HERE
+import org.xwalk.core.XWalkClient;
+import org.xwalk.core.XWalkView;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.util.Log;
+import android.view.Menu;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+// X WALK TEST ENDS HERE
+
 public class MainActivity extends CordovaActivity
 {
     @Override
@@ -29,6 +43,30 @@ public class MainActivity extends CordovaActivity
     {
         super.onCreate(savedInstanceState);
         // Set by <content src="index.html" /> in config.xml
+
+
+
+
+
+        // X WALK TEST STARTS HERE
+        XWalkView webView = new XWalkView(this, this);
+        webView.setXWalkClient(new XWalkClient() {
+          @Override
+          public WebResourceResponse shouldInterceptRequest(XWalkView view, String url) {
+
+
+            Log.d(TAG, "Intercepting " + url);
+            return super.shouldInterceptRequest(view, url);
+
+
+            // INFO: GOAL LATER HERE IS TO CHECK FOR EXTERNAL URLs (http & https) and forward them to the system browser
+
+
+          }
+        });
+        webView.loadUrl(URL);
+        setContentView(webView);
+        // X WALK TEST ENDS HERE
 
 
         
