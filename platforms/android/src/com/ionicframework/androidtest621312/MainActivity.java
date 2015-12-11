@@ -24,16 +24,11 @@ import org.apache.cordova.*;
 
 
 // X WALK TEST STARTS HERE
-import org.xwalk.core.XWalkClient;
+import org.xwalk.core.XWalkResourceClient;
+import org.xwalk.core.XWalkUIClient;
 import org.xwalk.core.XWalkView;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
-import android.view.Menu;
 import android.webkit.WebResourceResponse;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 // X WALK TEST ENDS HERE
 
 public class MainActivity extends CordovaActivity
@@ -42,6 +37,7 @@ public class MainActivity extends CordovaActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        super.init();
         // Set by <content src="index.html" /> in config.xml
 
 
@@ -49,27 +45,36 @@ public class MainActivity extends CordovaActivity
 
 
         // X WALK TEST STARTS HERE
-        XWalkView webView = new XWalkView(this, this);
-        webView.setXWalkClient(new XWalkClient() {
-          @Override
-          public WebResourceResponse shouldInterceptRequest(XWalkView view, String url) {
+        XWalkView webView =  ((XWalkView) this.appView.getEngine().getView()); //.getSettings();
 
+        initializeXWalkViewClients(webView);
 
-            Log.d(TAG, "Intercepting " + url);
-            return super.shouldInterceptRequest(view, url);
-
-
-            // INFO: GOAL LATER HERE IS TO CHECK FOR EXTERNAL URLs (http & https) and forward them to the system browser
-
-
-          }
-        });
-        webView.loadUrl(URL);
-        setContentView(webView);
         // X WALK TEST ENDS HERE
 
-
-        
         loadUrl(launchUrl);
+
+
     }
+
+    private void initializeXWalkViewClients(XWalkView xwalkView) {
+        xwalkView.setResourceClient(new XWalkResourceClient(xwalkView) {
+
+
+            @Override
+            public WebResourceResponse shouldInterceptLoadRequest(XWalkView view, String url) {
+
+
+                if (url == "http://www.bitflower.net") {
+                    return null;
+                }
+
+                //If the return value is null, the WebView will continue to load the resource as usual.
+                return null;
+
+                //Otherwise, the return response and data will be used.
+            }
+        });
+
+    }
+
 }
