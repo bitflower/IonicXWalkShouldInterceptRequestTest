@@ -35,6 +35,10 @@ import android.webkit.WebResourceResponse;
 
 public class MainActivity extends CordovaActivity
 {
+
+    private Boolean loadInternal = false;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -65,8 +69,16 @@ public class MainActivity extends CordovaActivity
             @Override
             public WebResourceResponse shouldInterceptLoadRequest(XWalkView view, String url) {
 
+                if (url != null && url.startsWith("loadinternal") ) {
+                    loadInternal = true;
+                    return new WebResourceResponse("text/plain", "UTF-8", null);
+                }
+                if (url != null && url.startsWith("something") ) {
+                    loadInternal = false;
+                    return new WebResourceResponse("text/plain", "UTF-8", null);
+                }
 
-                if (url != null && (url.startsWith("http://") || url.startsWith("https://") )) {
+                if (url != null && (url.startsWith("http://") || url.startsWith("https://")) && !loadInternal ) {
                     view.getContext().startActivity(
                             new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 

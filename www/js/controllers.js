@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, $sce) {
+.controller('DashCtrl', function($scope, $sce, $timeout) {
 
     $scope.trustSrc = function(src) {
         return $sce.trustAsResourceUrl(src);
@@ -8,9 +8,25 @@ angular.module('starter.controllers', [])
 
     $scope.xwalktest = {
         loadUrl: function() {
-            $scope.iframeUrl = $scope.trustSrc('http://www.bitflower.net');
+            reportBackToObjectiveC('loadinternal');
+            $scope.iframeUrl = $scope.trustSrc('http://www.securikett.com');
+
+            $timeout(function() {
+                reportBackToObjectiveC('something');
+            }, 7000);
+
         }
     };
+
+    // HELPER: Call objective-c method
+    function reportBackToObjectiveC(string) {
+
+        var iframe = document.createElement("iframe");
+        iframe.setAttribute("src", string + "://");
+        document.documentElement.appendChild(iframe);
+        iframe.parentNode.removeChild(iframe);
+        iframe = null;
+    }
 
 
 })
