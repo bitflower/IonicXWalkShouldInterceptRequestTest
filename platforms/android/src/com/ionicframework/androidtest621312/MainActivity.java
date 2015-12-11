@@ -27,9 +27,7 @@ import org.apache.cordova.*;
 
 // X WALK TEST STARTS HERE
 import org.xwalk.core.XWalkResourceClient;
-import org.xwalk.core.XWalkUIClient;
 import org.xwalk.core.XWalkView;
-
 import android.webkit.WebResourceResponse;
 // X WALK TEST ENDS HERE
 
@@ -47,25 +45,18 @@ public class MainActivity extends CordovaActivity
         // Set by <content src="index.html" /> in config.xml
 
 
-
-
-
         // X WALK TEST STARTS HERE
         XWalkView webView =  ((XWalkView) this.appView.getEngine().getView()); //.getSettings();
-
         initializeXWalkViewClients(webView);
-
         // X WALK TEST ENDS HERE
 
         loadUrl(launchUrl);
-
 
     }
 
     private void initializeXWalkViewClients(XWalkView xwalkView) {
         xwalkView.setResourceClient(new XWalkResourceClient(xwalkView) {
-
-
+            
             @Override
             public WebResourceResponse shouldInterceptLoadRequest(XWalkView view, String url) {
 
@@ -87,7 +78,6 @@ public class MainActivity extends CordovaActivity
                     return null;
                 }
 
-                //Otherwise, the return response and data will be used.
             }
         });
 
