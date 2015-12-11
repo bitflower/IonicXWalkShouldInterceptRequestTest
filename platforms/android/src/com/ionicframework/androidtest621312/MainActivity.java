@@ -19,6 +19,8 @@
 
 package com.ionicframework.androidtest621312;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
@@ -64,12 +66,14 @@ public class MainActivity extends CordovaActivity
             public WebResourceResponse shouldInterceptLoadRequest(XWalkView view, String url) {
 
 
-                if (url == "http://www.bitflower.net") {
+                if (url != null && (url.startsWith("http://") || url.startsWith("https://") )) {
+                    view.getContext().startActivity(
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+
+                    return new WebResourceResponse("text/plain", "UTF-8", null);
+                } else {
                     return null;
                 }
-
-                //If the return value is null, the WebView will continue to load the resource as usual.
-                return null;
 
                 //Otherwise, the return response and data will be used.
             }
